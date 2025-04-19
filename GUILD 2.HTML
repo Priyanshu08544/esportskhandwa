@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESPORTS GUILD KHANDWA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+      text-align: center;
+    }
+    header, footer {
+      background-color: #333;
+      padding: 20px;
+    }
+    nav a {
+      color: lime;
+      margin: 0 15px;
+      text-decoration: none;
+    }
+    table {
+      margin: 20px auto;
+      width: 80%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #555;
+    }
+    th {
+      background-color: #555;
+      color: lime;
+    }
+    td {
+      background-color: #222;
+    }
+    .highlight {
+      background-color: lime;
+      color: black;
+      font-weight: bold;
+    }
+    .blur {
+      opacity: 0.3;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      width: 40%;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: lime;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: darkgreen;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ESPORTS KHANDWA MANAGEMENT</h1>
+  </header>
+  
+  <section id="uid-form">
+    <h2>Enter Guild UID to Highlight</h2>
+    <input type="text" id="uidInput" placeholder="Enter Guild UID">
+    <button onclick="highlightUID()">SEARCH </button>
+    <button onclick="resetTable()">Reset</button>
+  </section>
+
+  <section id="add-member-form">
+    <h2>Add or Remove a Member</h2>
+    <input type="text" id="nameInput" placeholder="Enter Member Name">
+    <input type="text" id="newUidInput" placeholder="Enter Member UID">
+    <button onclick="addMember()">Add Member</button>
+    <button onclick="removeMember()">Remove Member</button>
+  </section>
+
+  <section id="info">
+    <h2>Guild Members</h2>
+    <table id="guildTable">
+      <tr>
+        <th>Member Name</th>
+        <th>Guild UID</th>
+      </tr>
+      <tr>
+        <td class="name">ESP_LEADER</td>
+        <td class="uid">2442293149</td>
+      </tr>
+      <tr>
+        <td class="name">ESP_POOKIE</td>
+        <td class="uid">2436948211</td>
+      </tr>
+      <tr>
+        <td class="name">ESP_ZEROX</td>
+        <td class="uid">2169693063</td>
+      </tr>
+    </table>
+  </section>
+  
+  <footer>
+    <p>&copy; 2025 ESPORT KHANDWA Guild Management System</p>
+  </footer>
+
+  <script>
+    // Highlight function
+    function highlightUID() {
+      const inputUID = document.getElementById('uidInput').value;
+      const rows = document.querySelectorAll('tr');
+      
+      rows.forEach(row => {
+        const uidCell = row.querySelector('.uid');
+        const nameCell = row.querySelector('.name');
+        
+        if (uidCell && nameCell) {
+          if (uidCell.textContent === inputUID) {
+            nameCell.classList.add('highlight');
+            uidCell.classList.add('highlight');
+          } else {
+            nameCell.classList.add('blur');
+            uidCell.classList.add('blur');
+          }
+        }
+      });
+    }
+    
+    // Reset function
+    function resetTable() {
+      const cells = document.querySelectorAll('.name, .uid');
+      cells.forEach(cell => {
+        cell.classList.remove('highlight', 'blur');
+      });
+      document.getElementById('uidInput').value = '';
+    }
+
+    // Add Member function
+    function addMember() {
+      const nameInput = document.getElementById('nameInput').value;
+      const uidInput = document.getElementById('newUidInput').value;
+
+      if (nameInput && uidInput) {
+        const table = document.getElementById('guildTable');
+        const newRow = table.insertRow(); // Add a new row
+
+        // Insert cells for name and UID
+        const nameCell = newRow.insertCell(0);
+        const uidCell = newRow.insertCell(1);
+
+        nameCell.textContent = nameInput;
+        uidCell.textContent = uidInput;
+
+        // Add the appropriate classes
+        nameCell.classList.add('name');
+        uidCell.classList.add('uid');
+
+        // Clear input fields
+        document.getElementById('nameInput').value = '';
+        document.getElementById('newUidInput').value = '';
+      } else {
+        alert('Please enter both name and UID!');
+      }
+    }
+
+    // Remove Member function
+    function removeMember() {
+      const nameInput = document.getElementById('nameInput').value;
+      const uidInput = document.getElementById('newUidInput').value;
+      const rows = document.querySelectorAll('#guildTable tr');
+
+      for (let i = 1; i < rows.length; i++) { // Start from index 1 to skip header row
+        const nameCell = rows[i].querySelector('.name');
+        const uidCell = rows[i].querySelector('.uid');
+        
+        if (nameCell && uidCell) {
+          if (nameCell.textContent === nameInput || uidCell.textContent === uidInput) {
+            document.getElementById('guildTable').deleteRow(i);
+            alert('Member removed successfully!');
+            return;
+          }
+        }
+      }
+
+      alert('No matching member found!');
+    }
+  </script>
+</body>
+</html>
